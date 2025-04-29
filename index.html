@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - Honkai Star Rail</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <div class="chat-container">
+    <h1>Meus personagens de Honkai: Star Rail e informações sobre o jogo.</h1>
+    <div class="chat-box" id="messages">
+        <!-- Aqui aparecem as mensagens -->
+    </div>
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Digite sua mensagem...">
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+    <footer class="footer">
+      Imagem pertence a HoYoverse – usada para fins educacionais.
+    </footer>
+  </div>
+ 
+  <script>
+    const inputField = document.getElementById('userInput');
+    const sendButton = document.querySelector('button');
+   
+    inputField.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter' && inputField.value.trim() !== '') {
+            sendMessage();
+        }
+    });
+ 
+    sendButton.addEventListener('click', function() {
+        if (inputField.value.trim() !== '') {
+            sendMessage();
+        }
+    });
+ 
+    function sendMessage() {
+        const message = inputField.value.trim();
+        const messageContainer = document.getElementById('messages');
+       
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        messageContainer.appendChild(messageElement);
+ 
+        inputField.value = '';
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  </script>
+ 
+</body>
+</html>
