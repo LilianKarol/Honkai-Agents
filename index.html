@@ -24,31 +24,60 @@
   <script>
     const inputField = document.getElementById('userInput');
     const sendButton = document.querySelector('button');
-   
+    
     inputField.addEventListener('keypress', function(event) {
         if (event.key === 'Enter' && inputField.value.trim() !== '') {
             sendMessage();
         }
     });
- 
+    
     sendButton.addEventListener('click', function() {
         if (inputField.value.trim() !== '') {
             sendMessage();
         }
     });
- 
+    
     function sendMessage() {
-        const message = inputField.value.trim();
+        const userMessage = inputField.value.trim();
+        if (!userMessage) return;
+    
         const messageContainer = document.getElementById('messages');
-       
-        const messageElement = document.createElement('div');
-        messageElement.textContent = message;
-        messageContainer.appendChild(messageElement);
- 
+    
+        // Exibe mensagem do usuário
+        const userMessageElement = document.createElement('div');
+        userMessageElement.classList.add('user-message');
+        userMessageElement.innerHTML = `<strong>Você:</strong> ${userMessage}`;
+        messageContainer.appendChild(userMessageElement);
+    
         inputField.value = '';
         messageContainer.scrollTop = messageContainer.scrollHeight;
+    
+        // Envia para o webhook do n8n
+        fetch('https://lilianksouza.app.n8n.cloud/webhook/16db7c35-f541-4096-a885-e36a861585ad', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const botMessageElement = document.createElement('div');
+            botMessageElement.classList.add('bot-message');
+            botMessageElement.innerHTML = `<strong>Bot:</strong> ${data.response}`;
+            messageContainer.appendChild(botMessageElement);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        })
+        .catch(error => {
+            const errorElement = document.createElement('div');
+            errorElement.classList.add('bot-message');
+            errorElement.innerHTML = `<strong>Erro:</strong> Não foi possível obter resposta.`;
+            messageContainer.appendChild(errorElement);
+            console.error(error);
+        });
     }
-  </script>
+    </script>
+    
  
 </body>
 </html>
