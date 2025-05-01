@@ -9,7 +9,7 @@ function sendMessage() {
 
     document.getElementById('userInput').value = '';
 
-    fetch('https://lilianksouza.app.n8n.cloud/webhook/16db7c35-f541-4096-a885-e36a861585ad', {
+    fetch('https://lilianksouza.app.n8n.cloud/webhook-test/16db7c35-f541-4096-a885-e36a861585ad', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
